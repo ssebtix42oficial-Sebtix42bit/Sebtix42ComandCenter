@@ -1507,11 +1507,27 @@ async function cargarSuscriptores() {
 }
 
 // Ejecuta la función al cargar el script
-// Función para obtener y actualizar los suscriptores en tiempo real
+// Función corregida para obtener y actualizar los suscriptores en tiempo real
     async function cargarSuscriptores() {
       const API_KEY = 'AIzaSyAWO2liOUhVf5jG_aRRtIFw1KaFhzXQDsI';
-      const CHANNEL_HANDLE = 'sebtix42';
-      ...
+      // Agregamos el '@' que la API de YouTube exige
+      const CHANNEL_HANDLE = '@sebtix42';
+
+      try {
+        const res = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&forHandle=${CHANNEL_HANDLE}&key=${API_KEY}`);
+        const data = await res.json();
+        
+        if (data.items && data.items.length > 0) {
+          const subs = data.items[0].statistics.subscriberCount;
+          document.getElementById('sidebarSubCount').innerText = Number(subs).toLocaleString();
+        } else {
+          document.getElementById('sidebarSubCount').innerText = 'No hallado';
+        }
+      } catch (error) {
+        console.error("Error al obtener los suscriptores:", error);
+        document.getElementById('sidebarSubCount').innerText = 'Error API';
+      }
+    }
   </script>
 </body>
 </html>
