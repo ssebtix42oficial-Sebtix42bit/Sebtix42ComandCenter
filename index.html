@@ -1487,6 +1487,27 @@
     // Inicializar
     render();
     if (audioList.length > 0) loadTrack(0);
+// Función para obtener y actualizar los suscriptores en tiempo real
+async function cargarSuscriptores() {
+  const API_KEY = 'AIzaSyAWO2liOUhVf5jG_aRRtIFw1KaFhzXQDsI';
+  const CHANNEL_HANDLE = 'sebtix42'; // Tu arroba de YouTube
+
+  try {
+    const res = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&forHandle=${CHANNEL_HANDLE}&key=${API_KEY}`);
+    const data = await res.json();
+    
+    if (data.items && data.items.length > 0) {
+      const subs = data.items[0].statistics.subscriberCount;
+      // Actualiza el texto en pantalla con los suscriptores formateados
+      document.getElementById('contador-subs').innerText = Number(subs).toLocaleString();
+    }
+  } catch (error) {
+    console.error("Error al obtener los suscriptores:", error);
+  }
+}
+
+// Ejecuta la función al cargar el script
+cargarSuscriptores();
   </script>
 </body>
 </html>
