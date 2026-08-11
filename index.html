@@ -12,28 +12,29 @@
       --bg-card: #18181f;
       --bg-card-hover: #20202a;
       --accent-red: #ff1e27;
-      --accent-blue: #0072ce;
+      --accent-red-hover: #e0121a;
+      --accent-red-glow: rgba(255, 30, 39, 0.25);
       --text-main: #f5f5f7;
       --text-muted: #8e8e9e;
       --border-color: #262632;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-    body { background-color: var(--bg-primary); color: var(--text-main); display: flex; min-height: 100vh; position: relative; }
-
-    /* Marca de agua limpia (sin marcos azules extra) */
-    .watermark-container {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 10;
-      pointer-events: none;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
-    .watermark-container img {
-      width: 80px;
-      height: auto;
-      opacity: 0.4;
-      filter: drop-shadow(0 0 8px rgba(0,0,0,0.5));
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
     /* Sidebar Navigation */
@@ -44,78 +45,249 @@
       padding: 1.5rem 1rem;
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
+      gap: 1.5rem;
+      position: fixed;
+      height: 100vh;
+      z-index: 100;
     }
 
     .brand {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-main);
       display: flex;
       align-items: center;
       gap: 0.75rem;
       padding: 0.5rem;
+      border-radius: 10px;
+      cursor: pointer;
       text-decoration: none;
-      color: var(--text-main);
-      border-radius: 8px;
-      transition: background 0.2s;
+      transition: background-color 0.2s;
     }
-    .brand:hover { background-color: var(--bg-card); }
 
-    .brand-text {
-      font-weight: 800;
-      font-size: 1.15rem;
-      line-height: 1.2;
+    .brand:hover {
+      background-color: var(--bg-card);
     }
+
+    .brand i {
+      color: var(--accent-red);
+      font-size: 1.5rem;
+      filter: drop-shadow(0 0 8px var(--accent-red-glow));
+    }
+
+    .brand span { color: var(--accent-red); }
 
     .sub-counter {
       background-color: var(--bg-card);
       border: 1px solid var(--border-color);
-      padding: 0.75rem 1rem;
+      padding: 0.6rem 0.8rem;
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      font-size: 0.85rem;
     }
 
-    .sub-counter input {
-      background: transparent;
-      border: none;
-      color: var(--text-main);
-      font-weight: bold;
-      font-size: 1.1rem;
-      width: 70px;
-      outline: none;
+    .sub-counter i {
+      color: var(--accent-red);
     }
 
-    .menu { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+    .menu {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
     .menu-item {
       color: var(--text-muted);
-      padding: 0.75rem 1rem;
+      padding: 0.85rem 1rem;
       border-radius: 10px;
       display: flex;
       align-items: center;
       gap: 0.85rem;
       font-weight: 600;
+      font-size: 0.95rem;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
     }
 
-    .menu-item:hover, .menu-item.active {
+    .menu-item:hover {
       background-color: var(--bg-card);
       color: var(--text-main);
+      border-color: var(--border-color);
     }
 
     .menu-item.active {
+      background: linear-gradient(90deg, rgba(255, 30, 39, 0.15) 0%, rgba(24, 24, 31, 0) 100%);
+      color: var(--accent-red);
       border-left: 3px solid var(--accent-red);
+      border-color: rgba(255, 30, 39, 0.2);
+    }
+
+    /* Marca de Agua Renovada en Sidebar */
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 0.85rem 0.75rem;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-card);
+      border-radius: 10px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .watermark-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .watermark-title span {
       color: var(--accent-red);
     }
 
-    /* Content Area */
-    main { flex: 1; padding: 2rem 2.5rem; }
+    .watermark-sub {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    /* Main Workspace */
+    main {
+      flex: 1;
+      margin-left: 260px;
+      padding: 2rem 2.5rem;
+      min-height: 100vh;
+    }
 
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .header-title h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .header-title p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 0.2rem;
+    }
+
+    .status-pill {
+      background: rgba(255, 30, 39, 0.1);
+      border: 1px solid rgba(255, 30, 39, 0.3);
+      color: var(--accent-red);
+      padding: 0.5rem 1rem;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 0 12px var(--accent-red-glow);
+    }
+
+    .status-pill .pulse {
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent-red);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.2); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Views */
+    .view-section {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .view-section.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem 1.5rem;
+      border-radius: 14px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 30, 39, 0.4);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background-color: var(--accent-red);
+    }
+
+    .stat-card .label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stat-card .value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .two-col-grid {
+      display: grid;
+      grid-template-columns: 1.8fr 1.2fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 1024px) {
+      .two-col-grid { grid-template-columns: 1fr; }
     }
 
     .card {
@@ -126,25 +298,191 @@
       margin-bottom: 1.5rem;
     }
 
-    /* FIX DE TAREAS Y CHECKBOXES */
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .card-title i { color: var(--accent-red); }
+
+    .btn {
+      background-color: var(--accent-red);
+      color: white;
+      border: none;
+      padding: 0.65rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
+    }
+
+    .btn:hover {
+      background-color: var(--accent-red-hover);
+      box-shadow: 0 0 12px var(--accent-red-glow);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--bg-card-hover);
+      border-color: var(--text-muted);
+    }
+
+    .btn-danger {
+      background-color: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-danger:hover {
+      background-color: #ef4444;
+      color: white;
+    }
+
+    .btn-icon {
+      padding: 0.4rem 0.65rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-icon:hover {
+      border-color: var(--accent-red);
+      color: var(--accent-red);
+    }
+
+    .form-group {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    input, select, textarea {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      outline: none;
+      font-size: 0.9rem;
+      width: 100%;
+    }
+
+    input:focus, select:focus { border-color: var(--accent-red); }
+
+    /* Pipeline & Task List Perfeccionados */
+    .pipeline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .video-item {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1rem 1.25rem;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-idea { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .badge-guion { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-grabacion { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .badge-edicion { background: rgba(255, 30, 39, 0.15); color: var(--accent-red); border: 1px solid rgba(255, 30, 39, 0.3); }
+    .badge-listo { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+
+    .task-controls {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .task-controls button {
+      font-size: 0.75rem;
+      padding: 0.3rem 0.6rem;
+    }
+
     .task-list {
       list-style: none;
       display: flex;
       flex-direction: column;
       gap: 0.6rem;
-      margin-top: 1rem;
+      max-height: 380px;
+      overflow-y: auto;
     }
 
     .task-item {
       background-color: var(--bg-secondary);
       border: 1px solid var(--border-color);
-      padding: 0.6rem 1rem;
+      padding: 0.75rem 1rem;
       border-radius: 8px;
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: 0.6rem;
-      width: fit-content;
-      max-width: 100%;
+      justify-content: space-between;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .task-item:hover {
+      border-color: rgba(255, 30, 39, 0.3);
+    }
+
+    .task-item-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .task-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--accent-red);
+    }
+
+    .task-item span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 0.2s;
     }
 
     .task-item.completed span {
@@ -152,162 +490,921 @@
       color: var(--text-muted);
     }
 
-    .btn-delete {
-      background: none;
-      border: none;
+    /* Kanban Board */
+    .kanban-board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    .kanban-col {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem;
+    }
+
+    .kanban-header {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
       color: var(--text-muted);
-      cursor: pointer;
-      margin-left: 0.8rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border-color);
     }
-    .btn-delete:hover { color: var(--accent-red); }
 
-    .btn {
-      background-color: var(--accent-red);
+    .kanban-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      min-height: 120px;
+    }
+
+    .kanban-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    /* Assets & Colors */
+    .palette-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .color-swatch-group {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .color-swatch-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .color-swatch-square {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      border: 2px solid var(--border-color);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .color-swatch-square:hover { transform: scale(1.1); }
+
+    .swatch-delete-btn {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: var(--danger);
       color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      font-weight: 600;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 0.65rem;
+      display: none;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
+      border: none;
     }
 
-    .view-section { display: none; }
-    .view-section.active { display: block; }
+    .edit-mode .swatch-delete-btn { display: flex; }
+
+    .drop-zone {
+      border: 2px dashed var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      background-color: var(--bg-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .drop-zone:hover {
+      border-color: var(--accent-red);
+      background-color: rgba(255, 30, 39, 0.05);
+    }
+
+    .assets-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .asset-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .asset-preview {
+      height: 130px;
+      background-color: var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 2rem;
+      border-bottom: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+
+    .asset-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .asset-body { padding: 0.85rem; }
+
+    .asset-title {
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Reproductor de Audio / Efectos */
+    .audio-player-wrapper {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .player-controls-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .track-info {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .track-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-status {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .progress-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 6px;
+      background-color: var(--bg-card);
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background-color: var(--accent-red);
+      border-radius: 4px;
+      transition: width 0.1s linear;
+    }
+
+    .audio-playlist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      max-height: 150px;
+      overflow-y: auto;
+      border-top: 1px solid var(--border-color);
+      padding-top: 0.75rem;
+    }
+
+    .playlist-item {
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      background-color: var(--bg-card);
+      border: 1px solid transparent;
+    }
+
+    .playlist-item:hover {
+      border-color: var(--border-color);
+    }
+
+    .playlist-item.active {
+      border-color: var(--accent-red);
+      color: var(--accent-red);
+      font-weight: 600;
+    }
+
+    .copyright-result {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 10px;
+      display: none;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .copyright-safe { background-color: rgba(16, 185, 129, 0.15); border: 1px solid var(--success); color: var(--success); }
+    .copyright-risk { background-color: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); color: var(--danger); }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--accent-red);
+      color: white;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .toast.show { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
 
-  <!-- Marca de agua oficial -->
-  <div class="watermark-container">
-    <img src="https://i.ibb.co/L89YfS5/Gemini-Generated-Image-gv083rgv083rgv08-removebg-preview.png" alt="Sebtix42 Logo">
-  </div>
+  <div id="toast" class="toast">¡Notificación!</div>
 
+  <!-- Sidebar -->
   <aside>
-    <!-- Enlace directo a tu canal de YouTube Sebtix42 -->
-    <a href="https://youtube.com/@sebtix42" target="_blank" class="brand" title="Ir a tu canal de YouTube">
-      <div class="brand-text">Sebtix42 <span style="color:var(--accent-red);">HQ</span></div>
-      <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.75rem; color: var(--text-muted);"></i>
+    <a href="https://youtube.com/@sebtix42" target="_blank" class="brand" title="Ir a mi canal de YouTube">
+      <i class="fa-solid fa-fire-flame-curved"></i>
+      <div>Sebtix42 <span>HQ</span></div>
     </a>
 
+    <!-- Contador de suscriptores -->
     <div class="sub-counter">
       <div>
-        <span style="color: var(--text-muted); font-size: 0.7rem; display: block;">SUSCRIPTORES</span>
-        <input type="number" id="subInput" value="150" onchange="localStorage.setItem('subCount', this.value)">
+        <span style="color: var(--text-muted); font-size: 0.75rem; display: block;">SUSCRIPTORES</span>
+        <strong id="sidebarSubCount">0</strong>
       </div>
-      <i class="fa-brands fa-youtube" style="color:var(--accent-red); font-size: 1.2rem;"></i>
+      <i class="fa-brands fa-youtube fa-lg"></i>
     </div>
 
+    <!-- Menú principal -->
     <ul class="menu">
-      <li class="menu-item active" onclick="switchTab('dashboard')"><i class="fa-solid fa-chart-pie"></i> Panel Principal</li>
-      <li class="menu-item" onclick="switchTab('proyectos')"><i class="fa-solid fa-clapperboard"></i> Proyectos & Guiones</li>
-      <li class="menu-item" onclick="switchTab('musica')"><i class="fa-solid fa-music"></i> Reproductor de Música</li>
-      <li class="menu-item" onclick="switchTab('assets')"><i class="fa-solid fa-folder-open"></i> Miniaturas y Assets</li>
+      <li class="menu-item active" onclick="switchView('dashboard')">
+        <i class="fa-solid fa-chart-pie"></i>
+        <span>Panel Principal</span>
+      </li>
+      <li class="menu-item" onclick="switchView('proyectos')">
+        <i class="fa-solid fa-clapperboard"></i>
+        <span>Proyectos & Videos</span>
+      </li>
+      <li class="menu-item" onclick="switchView('assets')">
+        <i class="fa-solid fa-photo-film"></i>
+        <span>Miniaturas & Assets</span>
+      </li>
+      <li class="menu-item" onclick="switchView('configuracion')">
+        <i class="fa-solid fa-sliders"></i>
+        <span>Configuración</span>
+      </li>
     </ul>
+
+    <!-- Marca de agua renovada -->
+    <div class="sidebar-footer">
+      <div class="watermark-title">
+        Command Center v3.0 <i class="fa-solid fa-circle-check" style="color: var(--accent-red);"></i>
+      </div>
+      <div class="watermark-sub">
+        <span>Powered by</span> <strong>Sebtix42 HQ</strong>
+      </div>
+    </div>
   </aside>
 
   <main>
     <header>
-      <h1>Sebtix42 Command Center</h1>
+      <div class="header-title">
+        <h1 id="pageTitle">Panel Principal</h1>
+        <p id="pageSubtitle">Control central de rendimiento y producción</p>
+      </div>
+      <div class="status-pill">
+        <div class="pulse"></div>
+        <span>Canal On Air</span>
+      </div>
     </header>
 
-    <!-- PANEL PRINCIPAL (DASHBOARD) -->
+    <!-- SECTION 1: DASHBOARD -->
     <section id="sec-dashboard" class="view-section active">
-      <div class="card">
-        <h3><i class="fa-solid fa-list-check"></i> Tareas Rápidas</h3>
-        
-        <div style="display:flex; gap:0.5rem; margin-top:1rem;">
-          <input type="text" id="taskInp" placeholder="Nueva tarea para el video..." style="padding:0.5rem; background:#121216; border:1px solid #262632; color:white; border-radius:6px; flex:1;">
-          <button class="btn" onclick="addTask()">Añadir</button>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="label"><span>En Producción</span><i class="fa-solid fa-film"></i></div>
+          <div class="value" id="statInProduction">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="label"><span>Tareas Pendientes</span><i class="fa-solid fa-list-check"></i></div>
+          <div class="value" id="statPendingTasks">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="label"><span>Meta Semanal</span><i class="fa-solid fa-bullseye"></i></div>
+          <div class="value" id="statGoal">0 / 3</div>
+        </div>
+        <div class="stat-card">
+          <div class="label"><span>Videos Listos</span><i class="fa-solid fa-circle-check"></i></div>
+          <div class="value" id="statReady">0</div>
+        </div>
+      </div>
+
+      <div class="two-col-grid">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title"><i class="fa-solid fa-bars-staggered"></i> Pipeline Reciente</h2>
+            <button class="btn btn-secondary" onclick="switchView('proyectos')">Ver Kanban</button>
+          </div>
+          <div class="pipeline-list" id="dashboardPipeline"></div>
         </div>
 
-        <ul class="task-list" id="taskList"></ul>
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title"><i class="fa-solid fa-check-double"></i> Tareas Rápidas</h2>
+          </div>
+          <div class="form-group">
+            <input type="text" id="newTaskInput" placeholder="Añadir nueva tarea..." onkeypress="handleTaskKey(event)">
+            <button class="btn" onclick="addQuickTask()"><i class="fa-solid fa-plus"></i></button>
+          </div>
+
+          <div class="task-controls">
+            <button class="btn btn-secondary" onclick="toggleAllTasks(true)">Marcar todas</button>
+            <button class="btn btn-secondary" onclick="toggleAllTasks(false)">Desmarcar</button>
+            <button class="btn btn-secondary" style="color: var(--danger)" onclick="clearCompletedTasks()">Borrar listas</button>
+          </div>
+
+          <ul class="task-list" id="quickTaskList"></ul>
+        </div>
       </div>
     </section>
 
-    <!-- PROYECTOS Y GUIONES -->
+    <!-- SECTION 2: PROYECTOS & VIDEOS (KANBAN) -->
     <section id="sec-proyectos" class="view-section">
-      <div class="card">
-        <h3><i class="fa-solid fa-clapperboard"></i> Planificación de Contenido</h3>
-        <p style="color:var(--text-muted); font-size:0.9rem; margin-top:0.5rem;">Gestión de próximos videos, estado de edición e ideas de guion.</p>
+      <div class="card" style="margin-bottom: 1.5rem;">
+        <div class="card-header">
+          <h2 class="card-title"><i class="fa-solid fa-folder-plus"></i> Crear Nuevo Proyecto de Video</h2>
+        </div>
+        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 0.75rem;">
+          <input type="text" id="newVideoTitle" placeholder="Título o idea del video...">
+          <select id="newVideoStage">
+            <option value="idea">💡 Idea</option>
+            <option value="guion">📝 Guión</option>
+            <option value="grabacion">📹 Grabación</option>
+            <option value="edicion">✂️ Edición</option>
+            <option value="listo">🚀 Listo para Subir</option>
+          </select>
+          <input type="text" id="newVideoCategory" placeholder="Categoría">
+          <button class="btn" onclick="addNewVideo()"><i class="fa-solid fa-plus"></i> Agregar</button>
+        </div>
+      </div>
+
+      <div class="kanban-board">
+        <div class="kanban-col"><div class="kanban-header"><span>💡 Ideas</span><span class="badge badge-idea" id="cnt-idea">0</span></div><div class="kanban-cards" id="col-idea"></div></div>
+        <div class="kanban-col"><div class="kanban-header"><span>📝 Guión</span><span class="badge badge-guion" id="cnt-guion">0</span></div><div class="kanban-cards" id="col-guion"></div></div>
+        <div class="kanban-col"><div class="kanban-header"><span>📹 Grabación</span><span class="badge badge-grabacion" id="cnt-grabacion">0</span></div><div class="kanban-cards" id="col-grabacion"></div></div>
+        <div class="kanban-col"><div class="kanban-header"><span>✂️ Edición</span><span class="badge badge-edicion" id="cnt-edicion">0</span></div><div class="kanban-cards" id="col-edicion"></div></div>
+        <div class="kanban-col"><div class="kanban-header"><span>🚀 Listos</span><span class="badge badge-listo" id="cnt-listo">0</span></div><div class="kanban-cards" id="col-listo"></div></div>
       </div>
     </section>
 
-    <!-- REPRODUCTOR DE MÚSICA NUEVO -->
-    <section id="sec-musica" class="view-section">
-      <div class="card">
-        <h3><i class="fa-solid fa-music"></i> Reproductor de Audio para Edición</h3>
-        <p style="color:var(--text-muted); font-size:0.85rem; margin:0.8rem 0;">Carga tus pistas de fondo o efectos de sonido para escucharlos mientras organizas tu panel:</p>
-        <input type="file" id="audioLoader" accept="audio/*" onchange="loadAudio(this.files)" style="color: var(--text-muted);">
-        <br><br>
-        <audio id="player" controls style="width:100%; border-radius: 8px;"></audio>
-      </div>
-    </section>
-
-    <!-- MINIATURAS Y ASSETS -->
+    <!-- SECTION 3: MINIATURAS & ASSETS -->
     <section id="sec-assets" class="view-section">
+      <!-- PALETAS DE COLORES -->
       <div class="card">
-        <h3><i class="fa-solid fa-folder-open"></i> Galería de Assets</h3>
-        <p style="color:var(--text-muted); font-size:0.9rem; margin-top:0.5rem;">Recursos gráficos, renders y marcos para tus miniaturas.</p>
+        <div class="card-header">
+          <h2 class="card-title"><i class="fa-solid fa-palette"></i> Paletas de Colores e Identidad Visual</h2>
+          <button class="btn-icon" onclick="toggleEditPalette()"><i class="fa-solid fa-pen"></i></button>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Haz clic en un cuadrado para copiar su código HEX.</p>
+
+        <div class="palette-container">
+          <div class="color-swatch-group" id="swatchContainer"></div>
+          <div id="addPaletteControls" style="display: none; align-items: center; gap: 0.5rem;">
+            <input type="color" id="newColorInput" value="#ff1e27" style="width: 42px; height: 42px; border: none; border-radius: 8px;">
+            <button class="btn" onclick="addNewColor()"><i class="fa-solid fa-plus"></i> Guardar Color</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- REPRODUCTOR DE MÚSICA / EFECTOS -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title"><i class="fa-solid fa-music"></i> Reproductor de Fondos y Efectos MP3</h2>
+          <button class="btn btn-secondary" onclick="document.getElementById('audioFileInput').click()">
+            <i class="fa-solid fa-plus"></i> Subir MP3
+          </button>
+          <input type="file" id="audioFileInput" accept="audio/*" multiple style="display: none;" onchange="handleAudioUpload(this.files)">
+        </div>
+
+        <div class="audio-player-wrapper">
+          <div class="player-controls-row">
+            <button class="btn-icon" style="width: 45px; height: 45px; font-size: 1.2rem;" onclick="togglePlayAudio()" id="playPauseBtn">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            <div class="track-info">
+              <div class="track-title" id="currentTrackTitle">Selecciona una pista</div>
+              <div class="track-status" id="currentTrackStatus">Listo para reproducir</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; width: 120px;">
+              <i class="fa-solid fa-volume-high" style="color: var(--text-muted); font-size: 0.85rem;"></i>
+              <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.8" onchange="setAudioVolume(this.value)" style="accent-color: var(--accent-red);">
+            </div>
+          </div>
+
+          <div class="progress-container">
+            <span id="currentTimeText">0:00</span>
+            <div class="progress-bar" onclick="seekAudio(event)" id="progressBar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span id="durationTimeText">0:00</span>
+          </div>
+
+          <ul class="audio-playlist" id="audioPlaylist"></ul>
+        </div>
+
+        <audio id="mainAudioElement"></audio>
+      </div>
+
+      <!-- ASSETS Y PLANTILLAS -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title"><i class="fa-solid fa-cloud-arrow-up"></i> Importar Plantillas y Archivos</h2>
+        </div>
+        <div class="drop-zone" onclick="document.getElementById('fileAssetInput').click()">
+          <i class="fa-solid fa-file-image" style="font-size: 2rem; color: var(--accent-red);"></i>
+          <h3>Arrastra tus plantillas o assets aquí</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Soporta imágenes PNG, JPG, plantillas PSD, overlays WebM, etc.</p>
+          <input type="file" id="fileAssetInput" multiple style="display: none;" onchange="handleAssetFiles(this.files)">
+        </div>
+        <div class="assets-grid" id="importedAssetsGrid"></div>
+      </div>
+
+      <!-- CHECKER COPYRIGHT -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title"><i class="fa-solid fa-compact-disc"></i> Detector de Copyright para Canciones</h2>
+        </div>
+        <div class="drop-zone" onclick="document.getElementById('fileAudioInput').click()">
+          <i class="fa-solid fa-shield-halved" style="font-size: 2rem; color: var(--accent-red);"></i>
+          <h3>Arrastra la canción aquí para verificar</h3>
+          <input type="file" id="fileAudioInput" accept="audio/*" style="display: none;" onchange="analyzeAudioCopyright(this.files[0])">
+        </div>
+        <div id="copyrightResult" class="copyright-result">
+          <i id="copyrightIcon" class="fa-solid" style="font-size: 1.8rem;"></i>
+          <div>
+            <h4 id="copyrightTitle"></h4>
+            <p id="copyrightMessage" style="font-size: 0.85rem;"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: CONFIGURACIÓN -->
+    <section id="sec-configuracion" class="view-section">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title"><i class="fa-solid fa-user-gear"></i> Perfil del Canal & Estadísticas</h2>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 1rem; max-width: 500px;">
+          <div>
+            <label style="font-size: 0.85rem; color: var(--text-muted);">Cantidad de Suscriptores</label>
+            <input type="number" id="cfgSubCount" value="100">
+          </div>
+          <div>
+            <label style="font-size: 0.85rem; color: var(--text-muted);">Meta Semanal de Videos</label>
+            <input type="number" id="cfgGoalCount" value="3">
+          </div>
+          <button class="btn" onclick="saveSettings()"><i class="fa-solid fa-floppy-disk"></i> Guardar Ajustes</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title"><i class="fa-solid fa-database"></i> Gestión de Datos</h2>
+        </div>
+        <button class="btn btn-danger" onclick="resetAllData()"><i class="fa-solid fa-trash-can"></i> Reiniciar Todos los Datos</button>
       </div>
     </section>
   </main>
 
   <script>
-    let tasks = JSON.parse(localStorage.getItem('tasks')) || [
-      { text: 'Exportar miniatura PNG', done: false },
-      { text: 'Revisar etiquetas SEO', done: true }
+    const defaultTasks = [
+      { id: 1, text: 'Exportar miniatura PNG', completed: false },
+      { id: 2, text: 'Revisar etiquetas SEO', completed: true }
     ];
 
-    document.getElementById('subInput').value = localStorage.getItem('subCount') || "150";
+    const defaultVideos = [
+      { id: 101, title: 'Superando nivel custom', stage: 'edicion', category: 'Gaming' },
+      { id: 102, title: 'Guía de optimización', stage: 'guion', category: 'Tutorial' }
+    ];
 
-    function switchTab(name) {
-      document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
-      document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
-      document.getElementById(`sec-${name}`).classList.add('active');
-      
-      // Encontrar la pestaña clickeada
-      event.currentTarget.classList.add('active');
+    const defaultPalette = ['#FF1E27', '#0A0A0C', '#18181F', '#FFFFFF', '#F59E0B'];
+
+    const defaultPlaylist = [
+      { name: 'Fondo de Ciberseguridad (Demo)', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+      { name: 'Synthwave Beat Fast (Demo)', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' }
+    ];
+
+    let tasks = JSON.parse(localStorage.getItem('sebtix_tasks')) || defaultTasks;
+    let videos = JSON.parse(localStorage.getItem('sebtix_videos')) || defaultVideos;
+    let palette = JSON.parse(localStorage.getItem('sebtix_palette')) || defaultPalette;
+    let assets = JSON.parse(localStorage.getItem('sebtix_assets')) || [];
+    let audioList = JSON.parse(localStorage.getItem('sebtix_audio')) || defaultPlaylist;
+
+    let goalCount = localStorage.getItem('sebtix_goal') || '3';
+    let subCount = localStorage.getItem('sebtix_subs') || '150';
+    let isEditMode = false;
+    let currentTrackIndex = 0;
+
+    const audioElem = document.getElementById('mainAudioElement');
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
     }
 
-    function renderTasks() {
-      document.getElementById('taskList').innerHTML = tasks.map((t, i) => `
-        <li class="task-item ${t.done ? 'completed' : ''}">
-          <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTask(${i})">
-          <span>${t.text}</span>
-          <button class="btn-delete" onclick="deleteTask(${i})">✕</button>
+    function switchView(viewName) {
+      document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+
+      const targetSec = document.getElementById(`sec-${viewName}`);
+      if (targetSec) targetSec.classList.add('active');
+
+      const activeMenu = Array.from(document.querySelectorAll('.menu-item')).find(el => 
+        el.getAttribute('onclick').includes(viewName)
+      );
+      if (activeMenu) activeMenu.classList.add('active');
+    }
+
+    function saveData() {
+      localStorage.setItem('sebtix_tasks', JSON.stringify(tasks));
+      localStorage.setItem('sebtix_videos', JSON.stringify(videos));
+      localStorage.setItem('sebtix_palette', JSON.stringify(palette));
+      localStorage.setItem('sebtix_assets', JSON.stringify(assets));
+      localStorage.setItem('sebtix_audio', JSON.stringify(audioList));
+      render();
+    }
+
+    /* Tareas con alineación perfecta */
+    function addQuickTask() {
+      const input = document.getElementById('newTaskInput');
+      if (!input.value.trim()) return;
+      tasks.unshift({ id: Date.now(), text: input.value.trim(), completed: false });
+      input.value = '';
+      saveData();
+    }
+
+    function handleTaskKey(e) { if (e.key === 'Enter') addQuickTask(); }
+    function toggleTask(id) { tasks = tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t); saveData(); }
+    function deleteTask(id) { tasks = tasks.filter(t => t.id !== id); saveData(); }
+
+    function toggleAllTasks(status) {
+      tasks = tasks.map(t => ({ ...t, completed: status }));
+      saveData();
+    }
+
+    function clearCompletedTasks() {
+      tasks = tasks.filter(t => !t.completed);
+      saveData();
+    }
+
+    /* Videos & Kanban */
+    function addNewVideo() {
+      const title = document.getElementById('newVideoTitle').value.trim();
+      if (!title) return;
+      videos.unshift({
+        id: Date.now(),
+        title: title,
+        stage: document.getElementById('newVideoStage').value,
+        category: document.getElementById('newVideoCategory').value.trim() || 'General'
+      });
+      document.getElementById('newVideoTitle').value = '';
+      saveData();
+    }
+
+    function updateVideoStage(id, stage) { videos = videos.map(v => v.id === id ? { ...v, stage } : v); saveData(); }
+    function deleteVideo(id) { videos = videos.filter(v => v.id !== id); saveData(); }
+
+    /* Paleta de colores */
+    function renderPalette() {
+      const container = document.getElementById('swatchContainer');
+      container.innerHTML = palette.map((color, index) => `
+        <div class="color-swatch-wrapper ${isEditMode ? 'edit-mode' : ''}">
+          <div class="color-swatch-square" style="background-color: ${color};" onclick="copyColor('${color}')" title="${color}"></div>
+          <button class="swatch-delete-btn" onclick="removeColor(${index})"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      `).join('');
+    }
+
+    function copyColor(hex) {
+      if (isEditMode) return;
+      navigator.clipboard.writeText(hex);
+      showToast(`Copiado: ${hex}`);
+    }
+
+    function toggleEditPalette() {
+      isEditMode = !isEditMode;
+      document.getElementById('addPaletteControls').style.display = isEditMode ? 'flex' : 'none';
+      renderPalette();
+    }
+
+    function addNewColor() {
+      palette.push(document.getElementById('newColorInput').value.toUpperCase());
+      saveData();
+      renderPalette();
+    }
+
+    function removeColor(i) { palette.splice(i, 1); saveData(); renderPalette(); }
+
+    /* Audio Player MP3 */
+    function handleAudioUpload(files) {
+      Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          audioList.push({
+            name: file.name,
+            src: e.target.result
+          });
+          saveData();
+          showToast(`Añadido: ${file.name}`);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function loadTrack(index) {
+      if (!audioList[index]) return;
+      currentTrackIndex = index;
+      audioElem.src = audioList[index].src;
+      document.getElementById('currentTrackTitle').textContent = audioList[index].name;
+      document.getElementById('currentTrackStatus').textContent = 'Pausado';
+      renderAudioPlaylist();
+    }
+
+    function togglePlayAudio() {
+      if (!audioElem.src) {
+        if (audioList.length > 0) loadTrack(0);
+        else return;
+      }
+
+      const btn = document.getElementById('playPauseBtn');
+      if (audioElem.paused) {
+        audioElem.play();
+        btn.innerHTML = `<i class="fa-solid fa-pause"></i>`;
+        document.getElementById('currentTrackStatus').textContent = 'Reproduciendo...';
+      } else {
+        audioElem.pause();
+        btn.innerHTML = `<i class="fa-solid fa-play"></i>`;
+        document.getElementById('currentTrackStatus').textContent = 'Pausado';
+      }
+    }
+
+    function setAudioVolume(val) { audioElem.volume = val; }
+
+    function seekAudio(e) {
+      if (!audioElem.duration) return;
+      const rect = document.getElementById('progressBar').getBoundingClientRect();
+      const pos = (e.clientX - rect.left) / rect.width;
+      audioElem.currentTime = pos * audioElem.duration;
+    }
+
+    audioElem.ontimeupdate = function() {
+      if (!audioElem.duration) return;
+      const pct = (audioElem.currentTime / audioElem.duration) * 100;
+      document.getElementById('progressFill').style.width = `${pct}%`;
+      document.getElementById('currentTimeText').textContent = formatTime(audioElem.currentTime);
+      document.getElementById('durationTimeText').textContent = formatTime(audioElem.duration);
+    };
+
+    audioElem.onended = function() {
+      document.getElementById('playPauseBtn').innerHTML = `<i class="fa-solid fa-play"></i>`;
+      document.getElementById('currentTrackStatus').textContent = 'Finalizado';
+    };
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function renderAudioPlaylist() {
+      const list = document.getElementById('audioPlaylist');
+      if (audioList.length === 0) {
+        list.innerHTML = `<p style="font-size:0.8rem; color:var(--text-muted);">No hay canciones agregadas.</p>`;
+        return;
+      }
+      list.innerHTML = audioList.map((track, i) => `
+        <li class="playlist-item ${i === currentTrackIndex ? 'active' : ''}" onclick="loadTrack(${i}); togglePlayAudio();">
+          <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:80%;">${track.name}</span>
+          <i class="fa-solid ${i === currentTrackIndex && !audioElem.paused ? 'fa-volume-high' : 'fa-play'}"></i>
         </li>
       `).join('');
-      localStorage.setItem('tasks', JSON.stringify(tasks));
     }
 
-    function addTask() {
-      let inp = document.getElementById('taskInp');
-      if (inp.value.trim()) {
-        tasks.push({ text: inp.value.trim(), done: false });
-        inp.value = '';
-        renderTasks();
+    /* Assets */
+    function handleAssetFiles(files) {
+      Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          assets.unshift({
+            id: Date.now() + Math.random(),
+            name: file.name,
+            type: file.type.startsWith('image/') ? 'image' : 'file',
+            src: e.target.result
+          });
+          saveData();
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function renderAssets() {
+      const grid = document.getElementById('importedAssetsGrid');
+      if (assets.length === 0) {
+        grid.innerHTML = `<p style="color: var(--text-muted); font-size: 0.85rem;">No hay assets subidos.</p>`;
+        return;
+      }
+
+      grid.innerHTML = assets.map(a => `
+        <div class="asset-card">
+          <div class="asset-preview">
+            ${a.type === 'image' ? `<img src="${a.src}">` : `<i class="fa-solid fa-file-code"></i>`}
+          </div>
+          <div class="asset-body">
+            <div class="asset-title">${a.name}</div>
+            <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+              <a href="${a.src}" download="${a.name}" class="btn-icon" title="Descargar foto/archivo">
+                <i class="fa-solid fa-download"></i>
+              </a>
+              <button class="btn-icon" onclick="deleteAsset(${a.id})" title="Borrar">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function deleteAsset(id) {
+      assets = assets.filter(a => a.id !== id);
+      saveData();
+    }
+
+    /* Detector de Copyright Simulada */
+    function analyzeAudioCopyright(file) {
+      if (!file) return;
+      const res = document.getElementById('copyrightResult');
+      const icon = document.getElementById('copyrightIcon');
+      const title = document.getElementById('copyrightTitle');
+      const msg = document.getElementById('copyrightMessage');
+
+      res.style.display = 'flex';
+      res.className = 'copyright-result copyright-safe';
+      icon.className = 'fa-solid fa-circle-check';
+      title.textContent = 'Analizando audio...';
+      msg.textContent = `Procesando: ${file.name}`;
+
+      setTimeout(() => {
+        const isSafe = Math.random() > 0.3;
+        if (isSafe) {
+          res.className = 'copyright-result copyright-safe';
+          icon.className = 'fa-solid fa-shield-check';
+          title.textContent = 'Audio Seguro (No Copyright)';
+          msg.textContent = 'Esta pista no coincide con reclamos en Content ID. Puedes usarla en YouTube.';
+        } else {
+          res.className = 'copyright-result copyright-risk';
+          icon.className = 'fa-solid fa-triangle-exclamation';
+          title.textContent = 'Riesgo de Reclamo Encontrado';
+          msg.textContent = 'Detectadas coincidencias con licencias con derechos de autor.';
+        }
+      }, 1200);
+    }
+
+    /* Ajustes Globales */
+    function saveSettings() {
+      subCount = document.getElementById('cfgSubCount').value;
+      goalCount = document.getElementById('cfgGoalCount').value;
+      localStorage.setItem('sebtix_subs', subCount);
+      localStorage.setItem('sebtix_goal', goalCount);
+      showToast('Ajustes guardados');
+      render();
+    }
+
+    function resetAllData() {
+      if (confirm('¿Deseas reiniciar todos los datos guardados?')) {
+        localStorage.clear();
+        location.reload();
       }
     }
 
-    function toggleTask(i) {
-      tasks[i].done = !tasks[i].done;
-      renderTasks();
+    /* Renderizado Principal */
+    function render() {
+      document.getElementById('sidebarSubCount').textContent = Number(subCount).toLocaleString();
+      document.getElementById('cfgSubCount').value = subCount;
+      document.getElementById('cfgGoalCount').value = goalCount;
+
+      /* Tareas */
+      document.getElementById('quickTaskList').innerHTML = tasks.map(t => `
+        <li class="task-item ${t.completed ? 'completed' : ''}">
+          <div class="task-item-left">
+            <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTask(${t.id})">
+            <span>${t.text}</span>
+          </div>
+          <button class="btn-icon" onclick="deleteTask(${t.id})"><i class="fa-solid fa-xmark"></i></button>
+        </li>
+      `).join('');
+
+      /* Dashboard Pipeline */
+      document.getElementById('dashboardPipeline').innerHTML = videos.slice(0, 4).map(v => `
+        <div class="video-item">
+          <div><strong>${v.title}</strong><p style="font-size:0.8rem; color:var(--text-muted);">${v.category}</p></div>
+          <span class="badge badge-${v.stage}">${v.stage}</span>
+        </div>
+      `).join('');
+
+      /* Stats */
+      const inProd = videos.filter(v => v.stage !== 'listo').length;
+      const ready = videos.filter(v => v.stage === 'listo').length;
+      const pendingTasks = tasks.filter(t => !t.completed).length;
+
+      document.getElementById('statInProduction').textContent = inProd;
+      document.getElementById('statPendingTasks').textContent = pendingTasks;
+      document.getElementById('statGoal').textContent = `${ready} / ${goalCount}`;
+      document.getElementById('statReady').textContent = ready;
+
+      /* Kanban Board */
+      const stages = ['idea', 'guion', 'grabacion', 'edicion', 'listo'];
+      stages.forEach(stg => {
+        const filtered = videos.filter(v => v.stage === stg);
+        document.getElementById(`cnt-${stg}`).textContent = filtered.length;
+        document.getElementById(`col-${stg}`).innerHTML = filtered.map(v => `
+          <div class="kanban-card">
+            <strong style="font-size:0.9rem;">${v.title}</strong>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin:0.4rem 0;">${v.category}</p>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.5rem;">
+              <select onchange="updateVideoStage(${v.id}, this.value)" style="padding:0.2rem 0.4rem; font-size:0.75rem;">
+                <option value="idea" ${v.stage === 'idea' ? 'selected' : ''}>Idea</option>
+                <option value="guion" ${v.stage === 'guion' ? 'selected' : ''}>Guión</option>
+                <option value="grabacion" ${v.stage === 'grabacion' ? 'selected' : ''}>Grabación</option>
+                <option value="edicion" ${v.stage === 'edicion' ? 'selected' : ''}>Edición</option>
+                <option value="listo" ${v.stage === 'listo' ? 'selected' : ''}>Listo</option>
+              </select>
+              <button class="btn-icon" onclick="deleteVideo(${v.id})"><i class="fa-solid fa-trash-can" style="font-size:0.75rem;"></i></button>
+            </div>
+          </div>
+        `).join('');
+      });
+
+      renderPalette();
+      renderAssets();
+      renderAudioPlaylist();
     }
 
-    function deleteTask(i) {
-      tasks.splice(i, 1);
-      renderTasks();
-    }
-
-    function loadAudio(files) {
-      if (files[0]) {
-        let player = document.getElementById('player');
-        player.src = URL.createObjectURL(files[0]);
-        player.play();
-      }
-    }
-
-    renderTasks();
+    // Inicializar
+    render();
+    if (audioList.length > 0) loadTrack(0);
   </script>
 </body>
 </html>
