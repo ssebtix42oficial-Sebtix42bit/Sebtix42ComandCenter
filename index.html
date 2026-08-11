@@ -10,7 +10,6 @@
       --bg-primary: #0a0a0c;
       --bg-secondary: #121216;
       --bg-card: #18181f;
-      --bg-card-hover: #20202a;
       --accent-red: #ff1e27;
       --accent-blue: #0072ce;
       --text-main: #f5f5f7;
@@ -19,17 +18,20 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-    body { background-color: var(--bg-primary); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
+    body { background-color: var(--bg-primary); color: var(--text-main); display: flex; min-height: 100vh; }
 
-    /* Watermark background */
-    .watermark-bg {
+    /* Marca de agua flotante en la esquina superior derecha */
+    .watermark-container {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 180px;
-      opacity: 0.12;
+      top: 15px;
+      right: 25px;
+      z-index: 10;
       pointer-events: none;
-      z-index: 0;
+    }
+    .watermark-container img {
+      width: 70px;
+      height: auto;
+      opacity: 0.35;
     }
 
     /* Sidebar Navigation */
@@ -41,42 +43,33 @@
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
-      position: fixed;
-      height: 100vh;
-      z-index: 100;
     }
 
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-      padding: 0.5rem;
-      text-decoration: none;
-      color: var(--text-main);
-      border-radius: 10px;
-    }
-
-    .brand img {
-      width: 42px;
-      height: 42px;
-      object-fit: contain;
-    }
-
-    .brand-text {
       font-weight: 800;
       font-size: 1.1rem;
-      line-height: 1.2;
+      color: var(--text-main);
+      text-decoration: none;
+      padding: 0.5rem;
     }
 
     .sub-counter {
       background-color: var(--bg-card);
       border: 1px solid var(--border-color);
-      padding: 0.6rem 0.8rem;
+      padding: 0.75rem 1rem;
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 0.85rem;
+    }
+
+    .sub-counter input {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-weight: bold;
+      font-size: 1.1rem;
+      width: 70px;
     }
 
     .menu { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
@@ -88,32 +81,17 @@
       align-items: center;
       gap: 0.85rem;
       font-weight: 600;
-      font-size: 0.9rem;
       cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .menu-item:hover, .menu-item.active {
-      background-color: var(--bg-card);
-      color: var(--text-main);
     }
 
     .menu-item.active {
-      border-left: 3px solid var(--accent-red);
+      background-color: var(--bg-card);
       color: var(--accent-red);
+      border-left: 3px solid var(--accent-red);
     }
 
-    /* Workspace */
-    main { flex: 1; margin-left: 260px; padding: 2rem 2.5rem; position: relative; z-index: 1; }
-    
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--border-color);
-    }
+    /* Content Area */
+    main { flex: 1; padding: 2rem 2.5rem; }
 
     .card {
       background-color: var(--bg-card);
@@ -123,42 +101,29 @@
       margin-bottom: 1.5rem;
     }
 
-    .btn {
-      background-color: var(--accent-red);
-      color: white;
-      border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .btn-secondary { background: transparent; border: 1px solid var(--border-color); color: white; }
-
-    /* TASK LIST FIX */
+    /* CORRECCIÓN DE LA LISTA DE TAREAS */
     .task-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.6rem;
+      margin-top: 1rem;
     }
 
     .task-item {
       background-color: var(--bg-secondary);
       border: 1px solid var(--border-color);
-      padding: 0.6rem 0.8rem;
+      padding: 0.6rem 1rem;
       border-radius: 8px;
-      display: flex;
+      display: inline-flex; /* Mantiene la tarea pegada al checkbox sin espacios gigantes */
       align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem; /* Ajustado el espacio */
+      gap: 0.6rem; /* Distancia corta y limpia entre checkbox y texto */
+      width: fit-content;
+      max-width: 100%;
     }
 
-    .task-left {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem; /* Arreglado la distancia checkbox - texto */
-      flex: 1;
+    .task-item span {
+      font-size: 0.95rem;
     }
 
     .task-item.completed span {
@@ -166,109 +131,107 @@
       color: var(--text-muted);
     }
 
-    /* TAG GENERATOR & MUSIC PLAYER */
-    .tag-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 1rem;
+    .btn-delete {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      margin-left: 0.8rem;
     }
 
-    .tag-chip {
-      background: rgba(255, 30, 39, 0.15);
-      border: 1px solid var(--accent-red);
-      color: white;
-      padding: 0.4rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
+    .btn-delete:hover { color: var(--accent-red); }
 
     .view-section { display: none; }
     .view-section.active { display: block; }
+
+    /* Estilos Generador de Tags */
+    .tag-box { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+    .tag { background: #22222e; border: 1px solid var(--border-color); padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.85rem; }
   </style>
 </head>
 <body>
 
-  <!-- Escudo / Marca de Agua -->
-  <img src="https://i.ibb.co/L89YfS5/Gemini-Generated-Image-gv083rgv083rgv08-removebg-preview.png" class="watermark-bg" alt="SebTix42 Logo">
+  <!-- Marca de agua en la esquina -->
+  <div class="watermark-container">
+    <img src="https://i.ibb.co/L89YfS5/Gemini-Generated-Image-gv083rgv083rgv08-removebg-preview.png" alt="SebTix42 Logo">
+  </div>
 
   <aside>
-    <a href="https://youtube.com/@sebtix42" target="_blank" class="brand">
-      <img src="https://i.ibb.co/L89YfS5/Gemini-Generated-Image-gv083rgv083rgv08-removebg-preview.png" alt="SebTix42">
-      <div class="brand-text">SebTix42<br><span style="color:var(--accent-red); font-size:0.8rem;">HQ PANEL</span></div>
-    </a>
+    <a href="#" class="brand">SebTix42 <span style="color:var(--accent-red);">HQ</span></a>
 
     <div class="sub-counter">
       <div>
         <span style="color: var(--text-muted); font-size: 0.7rem; display: block;">SUSCRIPTORES</span>
-        <strong id="liveSubCount">150</strong>
+        <!-- Haz clic para editar manualmente el número real mientras agregamos la API de YouTube -->
+        <input type="number" id="subInput" value="150" onchange="localStorage.setItem('subCount', this.value)">
       </div>
       <i class="fa-brands fa-youtube" style="color:var(--accent-red)"></i>
     </div>
 
     <ul class="menu">
-      <li class="menu-item active" onclick="switchTab('dashboard')"><i class="fa-solid fa-chart-pie"></i> Panel</li>
-      <li class="menu-item" onclick="switchTab('proyectos')"><i class="fa-solid fa-clapperboard"></i> Proyectos</li>
+      <li class="menu-item active" onclick="switchTab('dashboard')"><i class="fa-solid fa-chart-pie"></i> Panel Principal</li>
       <li class="menu-item" onclick="switchTab('tags')"><i class="fa-solid fa-hashtag"></i> Generador Tags</li>
       <li class="menu-item" onclick="switchTab('musica')"><i class="fa-solid fa-music"></i> Reproductor</li>
-      <li class="menu-item" onclick="switchTab('assets')"><i class="fa-solid fa-photo-film"></i> Assets</li>
+      <li class="menu-item" onclick="switchTab('assets')"><i class="fa-solid fa-folder-open"></i> Miniaturas y Assets</li>
     </ul>
   </aside>
 
   <main>
-    <header>
+    <header style="margin-bottom: 2rem;">
       <h1>SebTix42 Command Center</h1>
     </header>
 
-    <!-- DASHBOARD -->
+    <!-- PANEL PRINCIPAL -->
     <section id="sec-dashboard" class="view-section active">
       <div class="card">
-        <h3><i class="fa-solid fa-check-double"></i> Tareas Rápidas</h3>
-        <div style="display:flex; gap:0.5rem; margin:1rem 0;">
-          <input type="text" id="taskInp" placeholder="Nueva tarea..." style="flex:1; padding:0.5rem; background:#121216; border:1px solid #262632; color:white; border-radius:6px;">
-          <button class="btn" onclick="addTask()">Añadir</button>
+        <h3><i class="fa-solid fa-list-check"></i> Tareas Rápidas</h3>
+        
+        <div style="display:flex; gap:0.5rem; margin-top:1rem;">
+          <input type="text" id="taskInp" placeholder="Nueva tarea..." style="padding:0.5rem; background:#121216; border:1px solid #262632; color:white; border-radius:6px; flex:1;">
+          <button onclick="addTask()" style="background:var(--accent-red); color:white; border:none; padding:0.5rem 1rem; border-radius:6px; cursor:pointer;">Añadir</button>
         </div>
+
         <ul class="task-list" id="taskList"></ul>
       </div>
     </section>
 
-    <!-- TAGS GENERATOR -->
+    <!-- GENERADOR DE TAGS -->
     <section id="sec-tags" class="view-section">
       <div class="card">
-        <h3><i class="fa-solid fa-hashtag"></i> Generador de Tags SEO para Gaming</h3>
+        <h3><i class="fa-solid fa-hashtag"></i> Generador de Tags para YouTube</h3>
         <input type="text" id="tagInp" placeholder="Ej: Geometry Dash, Terraria..." style="width:100%; padding:0.6rem; margin:1rem 0; background:#121216; border:1px solid #262632; color:white; border-radius:6px;">
-        <button class="btn" onclick="generateTags()">Generar Etiquetas</button>
-        <div class="tag-container" id="tagBox"></div>
+        <button onclick="generateTags()" style="background:var(--accent-red); color:white; border:none; padding:0.5rem 1rem; border-radius:6px; cursor:pointer;">Generar Etiquetas</button>
+        <div class="tag-box" id="tagBox"></div>
       </div>
     </section>
 
-    <!-- MUSIC PLAYER -->
+    <!-- REPRODUCTOR DE MÚSICA -->
     <section id="sec-musica" class="view-section">
       <div class="card">
-        <h3><i class="fa-solid fa-headphones"></i> Reproductor de Música para Edición</h3>
-        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1rem;">Carga archivos de audio de tu biblioteca local para escucharlos durante tu sesión de trabajo:</p>
-        <input type="file" id="audioLoader" accept="audio/*" onchange="loadAudio(this.files)" style="margin-bottom:1rem;">
-        <audio id="player" controls style="width:100%; margin-top:0.5rem;"></audio>
+        <h3><i class="fa-solid fa-music"></i> Reproductor de Audio</h3>
+        <p style="color:var(--text-muted); font-size:0.85rem; margin:0.8rem 0;">Carga tus pistas de audio locales para escucharlas de fondo:</p>
+        <input type="file" id="audioLoader" accept="audio/*" onchange="loadAudio(this.files)">
+        <br><br>
+        <audio id="player" controls style="width:100%;"></audio>
       </div>
     </section>
 
-    <!-- ASSETS -->
+    <!-- ASSETS Y MINIATURAS -->
     <section id="sec-assets" class="view-section">
       <div class="card">
-        <h3><i class="fa-solid fa-folder-open"></i> Galería de Assets & Plantillas</h3>
-        <p style="color:var(--text-muted); font-size:0.85rem;">Importa y descarga tus recursos visuales directamente.</p>
+        <h3><i class="fa-solid fa-folder-open"></i> Miniaturas y Assets</h3>
+        <p style="color:var(--text-muted); font-size:0.85rem;">Gestión e importación de recursos visuales para tus videos.</p>
       </div>
     </section>
   </main>
 
   <script>
-    let tasks = [
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [
       { text: 'Exportar miniatura PNG', done: false },
       { text: 'Revisar etiquetas SEO', done: true }
     ];
+
+    document.getElementById('subInput').value = localStorage.getItem('subCount') || "150";
 
     function switchTab(name) {
       document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
@@ -279,13 +242,12 @@
     function renderTasks() {
       document.getElementById('taskList').innerHTML = tasks.map((t, i) => `
         <li class="task-item ${t.done ? 'completed' : ''}">
-          <div class="task-left">
-            <input type="checkbox" ${t.done ? 'checked' : ''} onchange="tasks[${i}].done = !tasks[${i}].done; renderTasks();">
-            <span>${t.text}</span>
-          </div>
-          <button class="btn-secondary" style="padding:0.2rem 0.5rem;" onclick="tasks.splice(${i},1); renderTasks();">✕</button>
+          <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTask(${i})">
+          <span>${t.text}</span>
+          <button class="btn-delete" onclick="deleteTask(${i})">✕</button>
         </li>
       `).join('');
+      localStorage.setItem('tasks', JSON.stringify(tasks));
     }
 
     function addTask() {
@@ -297,10 +259,20 @@
       }
     }
 
+    function toggleTask(i) {
+      tasks[i].done = !tasks[i].done;
+      renderTasks();
+    }
+
+    function deleteTask(i) {
+      tasks.splice(i, 1);
+      renderTasks();
+    }
+
     function generateTags() {
-      let val = document.getElementById('tagInp').value || 'Gaming';
+      let val = document.getElementById('tagInp').value.trim() || 'Gaming';
       let tags = [val, `${val} gameplay`, `${val} español`, `${val} tics`, `SebTix42 ${val}`, 'gaming 2026'];
-      document.getElementById('tagBox').innerHTML = tags.map(t => `<div class="tag-chip">#${t}</div>`).join('');
+      document.getElementById('tagBox').innerHTML = tags.map(t => `<div class="tag">#${t}</div>`).join('');
     }
 
     function loadAudio(files) {
