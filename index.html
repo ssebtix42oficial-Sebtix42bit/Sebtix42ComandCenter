@@ -10,6 +10,7 @@
       --bg-primary: #0a0a0c;
       --bg-secondary: #121216;
       --bg-card: #18181f;
+      --bg-card-hover: #20202a;
       --accent-red: #ff1e27;
       --accent-blue: #0072ce;
       --text-main: #f5f5f7;
@@ -18,20 +19,21 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-    body { background-color: var(--bg-primary); color: var(--text-main); display: flex; min-height: 100vh; }
+    body { background-color: var(--bg-primary); color: var(--text-main); display: flex; min-height: 100vh; position: relative; }
 
-    /* Marca de agua flotante en la esquina superior derecha */
+    /* Marca de agua limpia (sin marcos azules extra) */
     .watermark-container {
       position: fixed;
-      top: 15px;
-      right: 25px;
+      top: 20px;
+      right: 20px;
       z-index: 10;
       pointer-events: none;
     }
     .watermark-container img {
-      width: 70px;
+      width: 80px;
       height: auto;
-      opacity: 0.35;
+      opacity: 0.4;
+      filter: drop-shadow(0 0 8px rgba(0,0,0,0.5));
     }
 
     /* Sidebar Navigation */
@@ -46,11 +48,21 @@
     }
 
     .brand {
-      font-weight: 800;
-      font-size: 1.1rem;
-      color: var(--text-main);
-      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
       padding: 0.5rem;
+      text-decoration: none;
+      color: var(--text-main);
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    .brand:hover { background-color: var(--bg-card); }
+
+    .brand-text {
+      font-weight: 800;
+      font-size: 1.15rem;
+      line-height: 1.2;
     }
 
     .sub-counter {
@@ -70,6 +82,7 @@
       font-weight: bold;
       font-size: 1.1rem;
       width: 70px;
+      outline: none;
     }
 
     .menu { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
@@ -82,16 +95,28 @@
       gap: 0.85rem;
       font-weight: 600;
       cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .menu-item:hover, .menu-item.active {
+      background-color: var(--bg-card);
+      color: var(--text-main);
     }
 
     .menu-item.active {
-      background-color: var(--bg-card);
-      color: var(--accent-red);
       border-left: 3px solid var(--accent-red);
+      color: var(--accent-red);
     }
 
     /* Content Area */
     main { flex: 1; padding: 2rem 2.5rem; }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
 
     .card {
       background-color: var(--bg-card);
@@ -101,7 +126,7 @@
       margin-bottom: 1.5rem;
     }
 
-    /* CORRECCIÓN DE LA LISTA DE TAREAS */
+    /* FIX DE TAREAS Y CHECKBOXES */
     .task-list {
       list-style: none;
       display: flex;
@@ -115,15 +140,11 @@
       border: 1px solid var(--border-color);
       padding: 0.6rem 1rem;
       border-radius: 8px;
-      display: inline-flex; /* Mantiene la tarea pegada al checkbox sin espacios gigantes */
+      display: inline-flex;
       align-items: center;
-      gap: 0.6rem; /* Distancia corta y limpia entre checkbox y texto */
+      gap: 0.6rem;
       width: fit-content;
       max-width: 100%;
-    }
-
-    .task-item span {
-      font-size: 0.95rem;
     }
 
     .task-item.completed span {
@@ -138,89 +159,95 @@
       cursor: pointer;
       margin-left: 0.8rem;
     }
-
     .btn-delete:hover { color: var(--accent-red); }
+
+    .btn {
+      background-color: var(--accent-red);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
 
     .view-section { display: none; }
     .view-section.active { display: block; }
-
-    /* Estilos Generador de Tags */
-    .tag-box { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
-    .tag { background: #22222e; border: 1px solid var(--border-color); padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.85rem; }
   </style>
 </head>
 <body>
 
-  <!-- Marca de agua en la esquina -->
+  <!-- Marca de agua oficial -->
   <div class="watermark-container">
-    <img src="https://i.ibb.co/L89YfS5/Gemini-Generated-Image-gv083rgv083rgv08-removebg-preview.png" alt="SebTix42 Logo">
+    <img src="https://i.ibb.co/L89YfS5/Gemini-Generated-Image-gv083rgv083rgv08-removebg-preview.png" alt="Sebtix42 Logo">
   </div>
 
   <aside>
-    <a href="#" class="brand">SebTix42 <span style="color:var(--accent-red);">HQ</span></a>
+    <!-- Enlace directo a tu canal de YouTube Sebtix42 -->
+    <a href="https://youtube.com/@sebtix42" target="_blank" class="brand" title="Ir a tu canal de YouTube">
+      <div class="brand-text">Sebtix42 <span style="color:var(--accent-red);">HQ</span></div>
+      <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.75rem; color: var(--text-muted);"></i>
+    </a>
 
     <div class="sub-counter">
       <div>
         <span style="color: var(--text-muted); font-size: 0.7rem; display: block;">SUSCRIPTORES</span>
-        <!-- Haz clic para editar manualmente el número real mientras agregamos la API de YouTube -->
         <input type="number" id="subInput" value="150" onchange="localStorage.setItem('subCount', this.value)">
       </div>
-      <i class="fa-brands fa-youtube" style="color:var(--accent-red)"></i>
+      <i class="fa-brands fa-youtube" style="color:var(--accent-red); font-size: 1.2rem;"></i>
     </div>
 
     <ul class="menu">
       <li class="menu-item active" onclick="switchTab('dashboard')"><i class="fa-solid fa-chart-pie"></i> Panel Principal</li>
-      <li class="menu-item" onclick="switchTab('tags')"><i class="fa-solid fa-hashtag"></i> Generador Tags</li>
-      <li class="menu-item" onclick="switchTab('musica')"><i class="fa-solid fa-music"></i> Reproductor</li>
+      <li class="menu-item" onclick="switchTab('proyectos')"><i class="fa-solid fa-clapperboard"></i> Proyectos & Guiones</li>
+      <li class="menu-item" onclick="switchTab('musica')"><i class="fa-solid fa-music"></i> Reproductor de Música</li>
       <li class="menu-item" onclick="switchTab('assets')"><i class="fa-solid fa-folder-open"></i> Miniaturas y Assets</li>
     </ul>
   </aside>
 
   <main>
-    <header style="margin-bottom: 2rem;">
-      <h1>SebTix42 Command Center</h1>
+    <header>
+      <h1>Sebtix42 Command Center</h1>
     </header>
 
-    <!-- PANEL PRINCIPAL -->
+    <!-- PANEL PRINCIPAL (DASHBOARD) -->
     <section id="sec-dashboard" class="view-section active">
       <div class="card">
         <h3><i class="fa-solid fa-list-check"></i> Tareas Rápidas</h3>
         
         <div style="display:flex; gap:0.5rem; margin-top:1rem;">
-          <input type="text" id="taskInp" placeholder="Nueva tarea..." style="padding:0.5rem; background:#121216; border:1px solid #262632; color:white; border-radius:6px; flex:1;">
-          <button onclick="addTask()" style="background:var(--accent-red); color:white; border:none; padding:0.5rem 1rem; border-radius:6px; cursor:pointer;">Añadir</button>
+          <input type="text" id="taskInp" placeholder="Nueva tarea para el video..." style="padding:0.5rem; background:#121216; border:1px solid #262632; color:white; border-radius:6px; flex:1;">
+          <button class="btn" onclick="addTask()">Añadir</button>
         </div>
 
         <ul class="task-list" id="taskList"></ul>
       </div>
     </section>
 
-    <!-- GENERADOR DE TAGS -->
-    <section id="sec-tags" class="view-section">
+    <!-- PROYECTOS Y GUIONES -->
+    <section id="sec-proyectos" class="view-section">
       <div class="card">
-        <h3><i class="fa-solid fa-hashtag"></i> Generador de Tags para YouTube</h3>
-        <input type="text" id="tagInp" placeholder="Ej: Geometry Dash, Terraria..." style="width:100%; padding:0.6rem; margin:1rem 0; background:#121216; border:1px solid #262632; color:white; border-radius:6px;">
-        <button onclick="generateTags()" style="background:var(--accent-red); color:white; border:none; padding:0.5rem 1rem; border-radius:6px; cursor:pointer;">Generar Etiquetas</button>
-        <div class="tag-box" id="tagBox"></div>
+        <h3><i class="fa-solid fa-clapperboard"></i> Planificación de Contenido</h3>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-top:0.5rem;">Gestión de próximos videos, estado de edición e ideas de guion.</p>
       </div>
     </section>
 
-    <!-- REPRODUCTOR DE MÚSICA -->
+    <!-- REPRODUCTOR DE MÚSICA NUEVO -->
     <section id="sec-musica" class="view-section">
       <div class="card">
-        <h3><i class="fa-solid fa-music"></i> Reproductor de Audio</h3>
-        <p style="color:var(--text-muted); font-size:0.85rem; margin:0.8rem 0;">Carga tus pistas de audio locales para escucharlas de fondo:</p>
-        <input type="file" id="audioLoader" accept="audio/*" onchange="loadAudio(this.files)">
+        <h3><i class="fa-solid fa-music"></i> Reproductor de Audio para Edición</h3>
+        <p style="color:var(--text-muted); font-size:0.85rem; margin:0.8rem 0;">Carga tus pistas de fondo o efectos de sonido para escucharlos mientras organizas tu panel:</p>
+        <input type="file" id="audioLoader" accept="audio/*" onchange="loadAudio(this.files)" style="color: var(--text-muted);">
         <br><br>
-        <audio id="player" controls style="width:100%;"></audio>
+        <audio id="player" controls style="width:100%; border-radius: 8px;"></audio>
       </div>
     </section>
 
-    <!-- ASSETS Y MINIATURAS -->
+    <!-- MINIATURAS Y ASSETS -->
     <section id="sec-assets" class="view-section">
       <div class="card">
-        <h3><i class="fa-solid fa-folder-open"></i> Miniaturas y Assets</h3>
-        <p style="color:var(--text-muted); font-size:0.85rem;">Gestión e importación de recursos visuales para tus videos.</p>
+        <h3><i class="fa-solid fa-folder-open"></i> Galería de Assets</h3>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-top:0.5rem;">Recursos gráficos, renders y marcos para tus miniaturas.</p>
       </div>
     </section>
   </main>
@@ -237,6 +264,9 @@
       document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
       document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
       document.getElementById(`sec-${name}`).classList.add('active');
+      
+      // Encontrar la pestaña clickeada
+      event.currentTarget.classList.add('active');
     }
 
     function renderTasks() {
@@ -267,12 +297,6 @@
     function deleteTask(i) {
       tasks.splice(i, 1);
       renderTasks();
-    }
-
-    function generateTags() {
-      let val = document.getElementById('tagInp').value.trim() || 'Gaming';
-      let tags = [val, `${val} gameplay`, `${val} español`, `${val} tics`, `SebTix42 ${val}`, 'gaming 2026'];
-      document.getElementById('tagBox').innerHTML = tags.map(t => `<div class="tag">#${t}</div>`).join('');
     }
 
     function loadAudio(files) {
