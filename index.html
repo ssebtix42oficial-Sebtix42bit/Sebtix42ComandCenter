@@ -126,7 +126,7 @@
       border-color: rgba(255, 30, 39, 0.2);
     }
 
-    /* Marca de Agua Renovada en Sidebar */
+    /* Marca de Agua */
     .sidebar-footer {
       margin-top: auto;
       padding: 0.85rem 0.75rem;
@@ -147,10 +147,6 @@
       justify-content: space-between;
       font-weight: 700;
       color: var(--text-main);
-    }
-
-    .watermark-title span {
-      color: var(--accent-red);
     }
 
     .watermark-sub {
@@ -395,7 +391,7 @@
 
     input:focus, select:focus { border-color: var(--accent-red); }
 
-    /* Pipeline & Task List Perfeccionados */
+    /* Pipeline & Task List */
     .pipeline-list {
       display: flex;
       flex-direction: column;
@@ -582,6 +578,21 @@
 
     .edit-mode .swatch-delete-btn { display: flex; }
 
+    /* Modal emergente para la Paleta de Color */
+    .color-picker-popover {
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg-secondary);
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .color-picker-popover.active {
+      display: flex;
+    }
+
     .drop-zone {
       border: 2px dashed var(--border-color);
       border-radius: 12px;
@@ -641,6 +652,19 @@
     }
 
     /* Reproductor de Audio / Efectos */
+    .toggle-playlist-btn {
+      color: var(--accent-red);
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: transform 0.3s ease;
+      display: inline-block;
+      margin-left: 0.4rem;
+    }
+
+    .toggle-playlist-btn.rotated {
+      transform: rotate(180deg);
+    }
+
     .audio-player-wrapper {
       background-color: var(--bg-secondary);
       border: 1px solid var(--border-color);
@@ -706,10 +730,15 @@
       display: flex;
       flex-direction: column;
       gap: 0.4rem;
-      max-height: 150px;
+      max-height: 180px;
       overflow-y: auto;
       border-top: 1px solid var(--border-color);
       padding-top: 0.75rem;
+      transition: all 0.3s ease;
+    }
+
+    .audio-playlist.collapsed {
+      display: none;
     }
 
     .playlist-item {
@@ -732,6 +761,12 @@
       border-color: var(--accent-red);
       color: var(--accent-red);
       font-weight: 600;
+    }
+
+    .playlist-item-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
     }
 
     .copyright-result {
@@ -769,7 +804,7 @@
 
   <div id="toast" class="toast">¡Notificación!</div>
 
-  <!-- Sidebar -->
+  <!-- Sidebar Navigation -->
   <aside>
     <a href="https://youtube.com/@sebtix42" target="_blank" class="brand" title="Ir a mi canal de YouTube">
       <i class="fa-solid fa-fire-flame-curved"></i>
@@ -805,7 +840,7 @@
       </li>
     </ul>
 
-    <!-- Marca de agua renovada -->
+    <!-- Marca de agua -->
     <div class="sidebar-footer">
       <div class="watermark-title">
         Command Center v3.0 <i class="fa-solid fa-circle-check" style="color: var(--accent-red);"></i>
@@ -919,9 +954,13 @@
 
         <div class="palette-container">
           <div class="color-swatch-group" id="swatchContainer"></div>
+          
           <div id="addPaletteControls" style="display: none; align-items: center; gap: 0.5rem;">
-            <input type="color" id="newColorInput" value="#ff1e27" style="width: 42px; height: 42px; border: none; border-radius: 8px;">
-            <button class="btn" onclick="addNewColor()"><i class="fa-solid fa-plus"></i> Guardar Color</button>
+            <button class="btn" onclick="openColorPicker()"><i class="fa-solid fa-plus"></i> Agregar Color</button>
+            <div id="colorPickerPopover" class="color-picker-popover">
+              <input type="color" id="modalColorInput" value="#ff1e27" style="width: 38px; height: 38px; border: none; border-radius: 6px; cursor: pointer;">
+              <button class="btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="addNewColor()"><i class="fa-solid fa-check"></i> Guardar</button>
+            </div>
           </div>
         </div>
       </div>
@@ -929,7 +968,11 @@
       <!-- REPRODUCTOR DE MÚSICA / EFECTOS -->
       <div class="card">
         <div class="card-header">
-          <h2 class="card-title"><i class="fa-solid fa-music"></i> Reproductor de Fondos y Efectos MP3</h2>
+          <h2 class="card-title">
+            <i class="fa-solid fa-music"></i> 
+            Reproductor de Fondos y Efectos MP3
+            <i id="playlistToggleIcon" class="fa-solid fa-chevron-down toggle-playlist-btn" onclick="togglePlaylistVisibility()" title="Desplegar/Ocultar Playlist"></i>
+          </h2>
           <button class="btn btn-secondary" onclick="document.getElementById('audioFileInput').click()">
             <i class="fa-solid fa-plus"></i> Subir MP3
           </button>
@@ -959,6 +1002,7 @@
             <span id="durationTimeText">0:00</span>
           </div>
 
+          <!-- Playlist Desplegable -->
           <ul class="audio-playlist" id="audioPlaylist"></ul>
         </div>
 
@@ -1041,8 +1085,8 @@
     const defaultPalette = ['#FF1E27', '#0A0A0C', '#18181F', '#FFFFFF', '#F59E0B'];
 
     const defaultPlaylist = [
-      { name: 'Fondo de Ciberseguridad (Demo)', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
-      { name: 'Synthwave Beat Fast (Demo)', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' }
+      { id: 1, name: 'Fondo de Ciberseguridad (Demo)', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+      { id: 2, name: 'Synthwave Beat Fast (Demo)', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' }
     ];
 
     let tasks = JSON.parse(localStorage.getItem('sebtix_tasks')) || defaultTasks;
@@ -1087,7 +1131,7 @@
       render();
     }
 
-    /* Tareas con alineación perfecta */
+    /* Tareas Rápidas */
     function addQuickTask() {
       const input = document.getElementById('newTaskInput');
       if (!input.value.trim()) return;
@@ -1147,23 +1191,40 @@
     function toggleEditPalette() {
       isEditMode = !isEditMode;
       document.getElementById('addPaletteControls').style.display = isEditMode ? 'flex' : 'none';
+      document.getElementById('colorPickerPopover').classList.remove('active');
       renderPalette();
     }
 
+    function openColorPicker() {
+      const popover = document.getElementById('colorPickerPopover');
+      popover.classList.toggle('active');
+    }
+
     function addNewColor() {
-      palette.push(document.getElementById('newColorInput').value.toUpperCase());
+      const selectedHex = document.getElementById('modalColorInput').value.toUpperCase();
+      palette.push(selectedHex);
+      document.getElementById('colorPickerPopover').classList.remove('active');
       saveData();
       renderPalette();
+      showToast(`Color agregado: ${selectedHex}`);
     }
 
     function removeColor(i) { palette.splice(i, 1); saveData(); renderPalette(); }
 
     /* Audio Player MP3 */
+    function togglePlaylistVisibility() {
+      const list = document.getElementById('audioPlaylist');
+      const icon = document.getElementById('playlistToggleIcon');
+      list.classList.toggle('collapsed');
+      icon.classList.toggle('rotated');
+    }
+
     function handleAudioUpload(files) {
       Array.from(files).forEach(file => {
         const reader = new FileReader();
         reader.onload = function(e) {
           audioList.push({
+            id: Date.now() + Math.random(),
             name: file.name,
             src: e.target.result
           });
@@ -1181,6 +1242,21 @@
       document.getElementById('currentTrackTitle').textContent = audioList[index].name;
       document.getElementById('currentTrackStatus').textContent = 'Pausado';
       renderAudioPlaylist();
+    }
+
+    function removeTrackFromPlaylist(e, id) {
+      e.stopPropagation(); // Previene reproduccion al hacer click en borrar
+      audioList = audioList.filter(item => item.id !== id);
+      if (audioList.length === 0) {
+        audioElem.pause();
+        audioElem.src = '';
+        document.getElementById('currentTrackTitle').textContent = 'Sin canciones';
+        document.getElementById('currentTrackStatus').textContent = 'Lista vacía';
+      } else if (currentTrackIndex >= audioList.length) {
+        loadTrack(0);
+      }
+      saveData();
+      showToast('Canción quitada de la playlist');
     }
 
     function togglePlayAudio() {
@@ -1232,13 +1308,19 @@
     function renderAudioPlaylist() {
       const list = document.getElementById('audioPlaylist');
       if (audioList.length === 0) {
-        list.innerHTML = `<p style="font-size:0.8rem; color:var(--text-muted);">No hay canciones agregadas.</p>`;
+        list.innerHTML = `<p style="font-size:0.8rem; color:var(--text-muted); text-align:center; padding: 0.5rem;">No hay canciones en la playlist.</p>`;
         return;
       }
+
       list.innerHTML = audioList.map((track, i) => `
         <li class="playlist-item ${i === currentTrackIndex ? 'active' : ''}" onclick="loadTrack(${i}); togglePlayAudio();">
-          <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:80%;">${track.name}</span>
-          <i class="fa-solid ${i === currentTrackIndex && !audioElem.paused ? 'fa-volume-high' : 'fa-play'}"></i>
+          <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:75%;">${track.name}</span>
+          <div class="playlist-item-actions">
+            <i class="fa-solid ${i === currentTrackIndex && !audioElem.paused ? 'fa-volume-high' : 'fa-play'}"></i>
+            <button class="btn-icon" style="border:none; padding: 0.2rem 0.4rem;" onclick="removeTrackFromPlaylist(event, ${track.id})" title="Quitar de playlist">
+              <i class="fa-solid fa-trash-can" style="color: var(--danger); font-size: 0.8rem;"></i>
+            </button>
+          </div>
         </li>
       `).join('');
     }
@@ -1292,7 +1374,7 @@
       saveData();
     }
 
-    /* Detector de Copyright Simulada */
+    /* Detector Copyright Simulada */
     function analyzeAudioCopyright(file) {
       if (!file) return;
       const res = document.getElementById('copyrightResult');
