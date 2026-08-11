@@ -77,17 +77,30 @@
 
     .brand span { color: var(--accent-red); }
 
-    .sub-counter {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-color);
-      padding: 0.6rem 0.8rem;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.85rem;
-    }
+async function cargarSuscriptores() {
+  const API_KEY = 'AIzaSyAWO2liOUhVf5jG_aRRtIFw1KaFhzXQDsI'; // Reemplaza esto con tu clave de Google
+  const CHANNEL_HANDLE = 'Sebtix42'; // Tu usuario de YouTube
 
+  try {
+    const response = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&forHandle=${CHANNEL_HANDLE}&key=${API_KEY}`);
+    const data = await response.json();
+
+    if (data.items && data.items.length > 0) {
+      const subs = data.items[0].statistics.subscriberCount;
+      // Actualiza el número en el contenedor .sub-counter de la barra lateral
+      document.getElementById('sidebarSubCount').innerText = Number(subs).toLocaleString();
+    } else {
+      document.getElementById('sidebarSubCount').innerText = 'No hallado';
+    }
+  } catch (error) {
+    console.error('Error al obtener suscriptores:', error);
+    document.getElementById('sidebarSubCount').innerText = 'Error API';
+  }
+}
+
+// Ejecuta la función para cargar la cifra apenas abra la página
+cargarSuscriptores();
+    
     .sub-counter i {
       color: var(--accent-red);
     }
