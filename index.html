@@ -1406,9 +1406,7 @@
 
     /* Ajustes Globales */
     function saveSettings() {
-      subCount = document.getElementById('cfgSubCount').value;
-      goalCount = document.getElementById('cfgGoalCount').value;
-      localStorage.setItem('sebtix_subs', subCount);
+      goalCount = document.getElementById('cfgGoalCount').value;f
       localStorage.setItem('sebtix_goal', goalCount);
       showToast('Ajustes guardados');
       render();
